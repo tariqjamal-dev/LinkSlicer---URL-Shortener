@@ -1,0 +1,26 @@
+﻿@model IEnumerable<ShortUrl>
+
+<h2>Your Generated URLs</h2>
+
+<table class="table table-bordered" id="my_Table">
+    <thead>
+        <tr>
+            <th>Original URL</th>
+            <th>Short URL</th>
+            <th>Created At</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var url in Model)
+        {
+            <tr>
+                <td>@url.OriginalUrl</td>
+                <td><a asp-controller="UrlShortener" asp-action="RedirectToOriginal" asp-route-shortCode="@url.ShortCode">@url.ShortCode</a></td>
+                <td>@url.CreatedAt</td>
+                <td><a asp-controller="Dashboard" asp-action="ViewLogs" asp-route-shortUrlId="@url.Id" class="btn btn-sm btn-info">View Logs</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

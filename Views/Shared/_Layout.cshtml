@@ -1,0 +1,152 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"] - LinkSlicer</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css">
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="~/lib/DataTables/datatables.css">
+
+    <!-- Custom Site CSS -->
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true">
+
+    <!-- jQuery (Required for Bootstrap & DataTables) -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- DataTables JS -->
+    <script src="~/lib/DataTables/datatables.js"></script>
+</head>
+
+<body class="theme-light">
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-light bg-light border-bottom shadow-sm">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="UrlShortener" asp-action="Index">LinkSlicer</a>
+                
+                <div class="ms-auto d-flex align-items-center">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <a class="nav-link me-3" asp-controller="Dashboard" asp-action="Home">Dashboard</a>
+                        <form method="post" asp-controller="Account" asp-action="Logout" class="d-inline">
+                            <button type="submit" class="btn btn-outline-danger">Logout</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <a class="nav-link me-3" asp-controller="Account" asp-action="Login">Login</a>
+                        <a class="nav-link me-3" asp-controller="Account" asp-action="Register">Register</a>
+                    }
+
+                    <!-- Light/Dark Mode Toggle -->
+                    @* <button class="theme-toggle ms-3" id="themeToggle" title="Toggle Light/Dark Mode">🌙</button> *@
+                </div>
+
+            </div>
+        </nav>
+    </header>
+
+    <div class="container mt-4">
+        <main role="main">
+            @RenderBody()
+        </main>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            let theme = localStorage.getItem("theme") || "light";
+            applyTheme(theme);
+
+            $("#themeToggle").click(function () {
+                let newTheme = $("body").hasClass("theme-dark") ? "light" : "dark";
+                applyTheme(newTheme);
+                localStorage.setItem("theme", newTheme);
+            });
+
+            function applyTheme(theme) {
+                if (theme === "dark") {
+                    $("body").addClass("theme-dark").removeClass("theme-light");
+                    $(".navbar").addClass("navbar-dark bg-dark").removeClass("navbar-light bg-light");
+                    $(".theme-toggle").text("☀️");
+                    $(".url-card, .result-box").addClass("dark-mode");
+                } else {
+                    $("body").addClass("theme-light").removeClass("theme-dark");
+                    $(".navbar").addClass("navbar-light bg-light").removeClass("navbar-dark bg-dark");
+                    $(".theme-toggle").text("🌙");
+                    $(".url-card, .result-box").removeClass("dark-mode");
+                }
+            }
+        });
+    </script>
+
+    <style>
+        body.theme-dark {
+            background-color: #181818;
+            color: white;
+        }
+
+        body.theme-light {
+            background-color: white;
+            color: black;
+        }
+
+        .theme-toggle {
+            border: none;
+            background: none;
+            font-size: 20px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .url-card {
+            max-width: 400px;
+            background-color: #ffffff;
+            color: black;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+            .url-card.dark-mode {
+                background-color: #222;
+                color: white;
+            }
+
+        .result-box {
+            background-color: #f8f9fa;
+            color: #000;
+            border-radius: 5px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+            .result-box.dark-mode {
+                background-color: #333;
+                color: white;
+            }
+
+        /* Prevent wrapping in table headers */
+        #my_Table th, #time_heading {
+            white-space: nowrap;
+        }
+
+    </style>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+    <script>
+        $(document).ready(function () {
+            $('#my_Table').DataTable({
+                // "order": [[2, "desc"]], // Sort by CreatedAt descending
+                "pageLength": 10, // Default entries per page
+                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                "responsive": true,
+                "scrollX": true,  // Enables horizontal scrolling
+            });
+        });
+    </script>
+</body>
+</html>

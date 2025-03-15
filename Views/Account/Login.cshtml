@@ -1,0 +1,21 @@
+﻿@model LoginViewModel
+
+<h2>Login</h2>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-info">@TempData["Message"]</div>
+}
+
+
+<form method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <input asp-for="Email" placeholder="Email" class="form-control" />
+    <input asp-for="Password" type="password" placeholder="Password" class="form-control" />
+    <button type="submit" class="btn btn-primary">Login</button>
+</form>
+
+<!-- Registration Message -->
+<div class="mt-3">
+    <p>Don't have an account? <a href="/Account/Register">Register here</a></p>
+</div>

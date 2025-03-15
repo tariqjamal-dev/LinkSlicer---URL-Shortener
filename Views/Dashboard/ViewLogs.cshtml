@@ -1,0 +1,40 @@
+﻿@model IEnumerable<AccessLogDTO>
+
+<h2>View Logs</h2>
+<table class="table table-bordered" id="my_Table">
+    <thead>
+        <tr>
+            <th>IP Address</th>
+            <th>Browser</th>
+            <th>Version</th>
+            <th>Device Type</th>
+            <th>Click Time</th>
+            <th>Country</th>
+            <th>Region</th>
+            <th>City</th>
+            <th>Referrer</th>
+            <th>UTM Source</th>
+            <th>UTM Medium</th>
+            <th>UTM Campaign</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var log in Model)
+        {
+            <tr>
+                <td>@log.IPAddress</td>
+                <td>@log.Browser</td>
+                <td>@log.BrowserVersion</td>
+                <td>@log.DeviceType</td>
+                <td id="time_heading">@log.ClickTimestamp</td>
+                <td>@log.Country</td>
+                <td>@log.Region</td>
+                <td>@log.City</td>
+                <td>@log.ReferrerUrl</td>
+                <td>@log.UTMSource</td>
+                <td>@log.UTMMedium</td>
+                <td>@log.UTMCampaign</td>
+            </tr>
+        }
+    </tbody>
+</table>
